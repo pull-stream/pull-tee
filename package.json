@@ -1,0 +1,21 @@
+{
+  "name": "pull-tee",
+  "description": "feed a pull-stream into multiple sinks",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dominictarr/pull-tee",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dominictarr/pull-tee.git"
+  },
+  "dependencies": {
+    "pull-stream": "~2.16.1"
+  },
+  "devDependencies": {
+    "tape": "~1.0.2"
+  },
+  "scripts": {
+    "test": "set -e; for t in test/*.js; do node $t; done"
+  },
+  "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://dominictarr.com)",
+  "license": "MIT"
+}
