@@ -4,15 +4,18 @@ var pull = require('pull-stream')
 //this could be improved to allow streams to read ahead.
 //this slows all streams to he slowest...
 
-module.exports = pull.Sink(function (read, sinks) {
+module.exports = pull.Through(function (read, sinks) {
+  if(!Array.isArray(sinks))
+    sinks = [sinks]
   sinks = sinks.filter(Boolean)
 
   var cbs = []
-  var i = sinks.length
+  var l = sinks.length + 1
+  var i = l
 
   function _read(abort, cb) {
     cbs.push(cb)
-    if(cbs.length < sinks.length)
+    if(cbs.length < l)
       return
 
     read(null, function (err, data) {
@@ -27,5 +30,7 @@ module.exports = pull.Sink(function (read, sinks) {
   sinks.forEach(function (sink) {
     sink(_read)
   })
+
+  return _read
 
 })
