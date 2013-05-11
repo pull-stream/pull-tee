@@ -5,7 +5,7 @@ var pull = require('pull-stream')
 //this slows all streams to he slowest...
 
 module.exports = pull.Sink(function (read, sinks) {
-  console.log(read, sinks)
+  sinks = sinks.filter(Boolean)
 
   var cbs = []
   var i = sinks.length
