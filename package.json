@@ -1,7 +1,7 @@
 {
   "name": "pull-tee",
   "description": "feed a pull-stream into multiple sinks",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "https://github.com/dominictarr/pull-tee",
   "repository": {
     "type": "git",
@@ -17,5 +17,3 @@
   "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://dominictarr.com)",
   "license": "MIT"
 }
-
-
