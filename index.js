@@ -1,36 +1,39 @@
-var pull = require('pull-stream')
 
 //TEE stream.
 //this could be improved to allow streams to read ahead.
 //this slows all streams to he slowest...
 
-module.exports = pull.Through(function (read, sinks) {
-  if(!Array.isArray(sinks))
-    sinks = [sinks]
-  sinks = sinks.filter(Boolean)
+module.exports = function (sinks) {
+  return function (read) {
 
-  var cbs = []
-  var l = sinks.length + 1
-  var i = l
+    if(!Array.isArray(sinks))
+      sinks = [sinks]
+    sinks = sinks.filter(Boolean)
 
-  function _read(abort, cb) {
-    cbs.push(cb)
-    if(cbs.length < l)
-      return
+    var cbs = []
+    var l = sinks.length + 1
+    var i = l
 
-    read(null, function (err, data) {
-      var _cbs = cbs
-      cbs = []
-      _cbs.forEach(function (cb) {
-        cb(err, data)
-      })      
+    function _read(abort, cb) {
+      cbs.push(cb)
+      if(cbs.length < l)
+        return
+
+      read(null, function (err, data) {
+        var _cbs = cbs
+        cbs = []
+        _cbs.forEach(function (cb) {
+          cb(err, data)
+        })
+      })
+    }
+
+    sinks.forEach(function (sink) {
+      sink(_read)
     })
+
+    return _read
+
   }
+}
 
-  sinks.forEach(function (sink) {
-    sink(_read)
-  })
-
-  return _read
-
-})

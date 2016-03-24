@@ -6,15 +6,20 @@ var tee  = require('../')
 test('tee', function (t) {
   var a, b
 
-  pull.values([1, 2, 3, 4, 5])
-  .pipe(tee(pull.collect(function (err, _a) {
-    a = _a
-    if(b && a) next()
-  })))
-  .pipe(pull.collect(function (err, _b) {
-    b = _b
-    if(b && a) next()
-  }))
+  pull(
+    pull.values([1, 2, 3, 4, 5]),
+    tee(
+      pull.collect(function (err, _a) {
+        a = _a
+        if(b && a) next()
+      })
+    ),
+    pull.collect(function (err, _b) {
+      b = _b
+      if(b && a) next()
+    })
+
+  )
 
   function next () {
     t.deepEqual(a, b)
@@ -33,20 +38,28 @@ function randAsync () {
 test('tee-async', function (t) {
   var a, b
 
-  pull.values([1, 2, 3, 4, 5])
-  .pipe(tee(randAsync().pipe(pull.collect(function (err, _a) {
-    a = _a
-    if(b && a) next()
-  })))
-  .pipe(randAsync())
-  .pipe(pull.collect(function (err, _b) {
-    b = _b
-    if(b && a) next()
-  })))
+  pull(
+    pull.values([1, 2, 3, 4, 5]),
+    tee(pull(
+        randAsync(),
+        pull.collect(function (err, _a) {
+          a = _a
+          if(b && a) next()
+        })
+      )
+    ),
+    randAsync(),
+    pull.collect(function (err, _b) {
+      b = _b
+      if(b && a) next()
+    })
+  )
 
   function next () {
     t.deepEqual(a, b)
     t.end()
   }
 })
+
+
 
