@@ -1,10 +1,3 @@
-# pull-tee
-
-feed a pull-stream into multiple sinks
-
-## example
-
-```js
 var test = require('tape')
 var pull = require('pull-stream')
 var tee  = require('../')
@@ -27,8 +20,4 @@ pull(
 )
 
 console.log(a, b)
-```
 
-## License
-
-MIT
