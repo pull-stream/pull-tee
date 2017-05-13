@@ -5,7 +5,6 @@ feed a pull-stream into multiple sinks
 ## example
 
 ```js
-var test = require('tape')
 var pull = require('pull-stream')
 var tee  = require('../')
 var assert = require('assert')

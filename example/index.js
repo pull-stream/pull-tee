@@ -1,4 +1,3 @@
-var test = require('tape')
 var pull = require('pull-stream')
 var tee  = require('../')
 var assert = require('assert')
